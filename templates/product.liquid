@@ -1,0 +1,97 @@
+{% section 'static-product' %}
+
+<!-- start Recomatic code -->
+<div class="recomatic-related-products-wrap product-section--container product-row--container">
+  <h2 class='home-section--title'>{{ shop.metafields.recomatic.product.headline }}</h2>
+  <div id="recomatic-related-products" data-widget="product" data-id="{{ product.id }}"></div>
+</div><!-- end Recomatic code -->
+
+{% section 'static-product-recommendations' %}
+
+{% section 'static-product-reviews' %}
+
+{% section 'static-recently-viewed' %}
+
+{% if product.metafields.loox.num_reviews %}
+<script id="looxSchemaJson" type="application/ld+json">
+{
+	"@context": "http://schema.org",
+	"@type": "Product",
+	"@id": {{ canonical_url | json }},
+	"aggregateRating": {
+		"@type": "AggregateRating",
+		"ratingValue": "{{ product.metafields.loox.avg_rating }}",
+		"reviewCount": "{{ product.metafields.loox.num_reviews }}"
+	},
+	"name": {{ product.title | json }}
+}
+</script>
+
+{% endif %}
+
+
+	<div id="looxReviews" data-product-id="{{product.id}}" class="loox-reviews-default">{{ product.metafields.loox.reviews }}</div>
+
+<script type="text/javascript">
+  var _learnq = _learnq || [];
+
+  var item = {
+    Name: {{ product.title|json }},
+    ProductID: {{ product.id|json }},
+    Categories: {{ product.collections|map:'title'|json }},
+    ImageURL: "https:{{ product.featured_image.src|img_url:'grande' }}",
+    URL: "{{ shop.secure_url }}{{ product.url }}",
+    Brand: {{ product.vendor|json }},
+    Price: {{ product.price|money|json }},
+    CompareAtPrice: {{ product.compare_at_price_max|money|json }}
+  };
+
+  _learnq.push(['track', 'Viewed Product', item]);
+  _learnq.push(['trackViewedItem', {
+    Title: item.Name,
+    ItemId: item.ProductID,
+    Categories: item.Categories,
+    ImageUrl: item.ImageURL,
+    Url: item.URL,
+    Metadata: {
+      Brand: item.Brand,
+      Price: item.Price,
+      CompareAtPrice: item.CompareAtPrice
+    }
+  }]);
+  
+  	var learnq = learnq || [];
+//    function at_atc_load()
+  
+//   { 
+//     if(otElementButtonAddToCart )
+//     {
+//       jQuery("#teeAtcButton,.product-form--atc-button,#new-form-atc,.ProductForm__AddToCart,.single_add_to_cart_button,#AddToCartForm button,.product__form button.add-to-cart, #AddToCart-product-template,.product-form__cart-submit,[name^='add']" +',.so-btn-add-to-cart-wrap').on('click',function(){_learnq.push(['track', 'Added to Cart', item]); console.log('klavio item atc'); }) 
+//       clearInterval(at_atc_interval);
+//       console.log('load atc action');
+//     }
+  
+//   }
+  
+// var at_atc_interval= setInterval( at_atc_load,1000);
+  
+</script>{% include 'wiser_related' %}{% include 'wiser_recommended' %}{% include 'wiser_alsobought' %}{% include 'wiser_recentview' %}{% include 'wiser_topselling' %}{% include 'wiser_trending' %}{% include 'wiser_newarrivals' %}{% include 'wiser_featured' %}{% include 'wiser_recent_related' %}
+
+ 
+<script type="text/javascript">
+  window.AVADA_EM = window.AVADA_EM || {};
+
+  window.AVADA_EM.product = {
+    id: {{ product.id|json }},
+    title: {{ product.title|json }},
+    vendor: {{ product.vendor|json }},
+    productType: {{ product.type|json }},
+    collections: {{ product.collections|map:'title'|json }},
+    image: "https:{{ product.featured_image.src|img_url:'grande' }}",
+    url: "{{ shop.secure_url }}{{ product.url }}",
+    price: {{ product.price |json }},
+    tags: {{ product.tags |json }},
+  };
+</script>
+
+{% render 'judgeme_widgets', widget_type: 'judgeme_review_widget', concierge_install: true, auto_install: true, product: product %}

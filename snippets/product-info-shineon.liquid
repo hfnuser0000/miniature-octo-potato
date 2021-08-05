@@ -1,0 +1,1029 @@
+<!-- ./snippets/product-info-shineon.liquid -->
+
+{% case product-info-shineon %}
+
+  {% when 'reviews-counter' %}
+
+    {% if section.settings.show_about_us_review_list == true or product.metafields.loox.num_reviews != null %}
+      {% if shop.metafields.loox["global_stats"] and product.metafields.loox.num_reviews != null %}
+        {% assign reviews_see_below_anchor = '#looxReviews' %}
+      {% else %}
+        {% assign reviews_see_below_anchor = '#custom-reviews-anchor' %}
+      {% endif %}
+
+      {% assign looxstats = shop.metafields.loox["global_stats"] | split: ',' %}
+      <div class="shop-rating">
+        <a href="{{ reviews_see_below_anchor }}">
+          {% if shop.metafields.loox["global_stats"] and product.metafields.loox.num_reviews != null %}
+            {% for loox_star in (1..5) %}
+            <i class="loox-icon loox-star"></i>
+            {% endfor %}
+          {% else %}
+            {% for loox_star in (1..5) %}
+            {% include 'shineon-app-icons' with 'star-rating' %}
+            {% endfor %}
+          {% endif %}
+          <span class="shop-rating-text">{{ section.settings.reviews_see_below }}</span>
+        </a>
+      </div>
+      <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function(event) {
+          jQuery( document ).ready(function($) {
+            // Select all links with hashes except(.not) links that don't actually link to anything
+            //$('a[href="#looxReviews"]').not('[href="#"]').not('[href="#0"]').click(function(event)
+            $('a[href="{{ reviews_see_below_anchor }}"]').click(function(event)
+            {
+              // On-page links
+              if (
+                location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') 
+                && 
+                location.hostname == this.hostname
+              ) {
+                // Figure out element to scroll to
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                // Does a scroll target exist?
+                if (target.length) {
+                  // Only prevent default if animation is actually gonna happen
+                  event.preventDefault();
+                  $('html, body').animate({
+                    scrollTop: target.offset().top
+                  }, 1000, function() {
+                    // Callback after animation
+                    // Must change focus!
+                    var $target = $(target);
+                    $target.focus();
+                    if ($target.is(":focus")) { // Checking if the target was focused
+                      return false;
+                    } else {
+                      $target.attr('tabindex','-1'); // Adding tabindex for elements not focusable
+                      $target.focus(); // Set focus again
+                    };
+                  });
+                }
+              }
+            });
+          });
+        });
+      </script>
+    {% endif %}
+
+  {% when 'reviews' %}
+
+    {% assign loox_reviews_counter = 0 %}
+
+    {% if template contains 'cart' %}
+      {% for item in cart.items %}
+        {% assign loox_reviews_counter = loox_reviews_counter | plus: item.product.metafields.loox.num_reviews %}
+      {% endfor %}
+    {% else %}
+      {% assign loox_reviews_counter = loox_reviews_counter | plus: product.metafields.loox.num_reviews %}
+    {% endif %}
+
+    <div class="custom-reviews-wrp{% if loox_reviews_counter > 0 %} loox-reviews{% endif %}" id="custom-reviews-anchor">
+
+      {% if section.settings.reviews_title != '' and section.settings.reviews_title != null %}
+        <h3>{{ section.settings.reviews_title }}</h3>
+      {% else %}
+        {% if shop.permanent_domain == 'shineon-platform.myshopify.com' or shop.permanent_domain == 'garnet-platform.myshopify.com' %}
+          {% include 'request-host' %}
+          {% assign review_about = company_name %}
+        {% else %}
+          {% assign review_about = 'us' %}
+        {% endif %}
+
+        <h3>See what people are saying <span>about {{ review_about }}</span></h3>
+      {% endif %}
+
+      {% if shop.permanent_domain == 'shineon-platform.myshopify.com' or shop.permanent_domain == 'garnet-platform.myshopify.com' %}
+        {% comment %}
+        <script type="text/javascript">
+          document.addEventListener("DOMContentLoaded", function(event) {
+            jQuery( document ).ready(function($) {
+              var checkExist = setInterval(function() {
+                if ($('#looxReviewsFrame').length) {
+                  var isLooxTags = $('#looxReviewsFrame').attr('src').split('&tags=')[1];
+                  console.log(isLooxTags);
+                  clearInterval(checkExist);
+                }
+              }, 100);
+            });
+          });
+        </script>
+        {% endcomment %}
+
+        {% assign mobile_reviews_qty = 2 %}
+        {% if settings.mobile_reviews_qty != null and settings.mobile_reviews_qty != '' %}
+          {% assign mobile_reviews_qty = settings.mobile_reviews_qty %}
+        {% endif %}
+
+        {% comment %}
+        Hidden input for CRO tests because no way to get Loox reviews quantity by JS
+        {% endcomment %}
+        {% assign lx_tag = product.tags | where : 'lx-' | join: ',' %}
+        {% assign lx_tag_reviews_counter = 0 %}
+        {% paginate collections.all.products by 1000 %}
+        {% for item in collections.all.products %}
+          {% for tag in item.tags %}
+            {% if lx_tag == tag %}
+              {% assign lx_tag_reviews_counter = lx_tag_reviews_counter | plus: item.metafields.loox.num_reviews %}
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+        {% endpaginate %}
+
+        <input type="hidden" name="loox_tags_reviews_quantity" value="{{ lx_tag_reviews_counter }}">
+        <div id="looxReviews" data-product-id="{{product.id}}" data-tags="{{ product.tags | where : 'lx-' | join: ',' }}" data-limit-mobile="{{ mobile_reviews_qty }}"></div>
+
+      {% else %}
+
+        {% if loox_reviews_counter == 0 %}
+
+          <div class="custom-reviews-inner">
+
+            {% if section.blocks.size > 0 %}
+
+              {% for review in section.blocks %}
+                <div class="custom-reviews-tile">
+                  <div class="stars-rating">
+                    {% for i in (1..review.settings.stars_quantity) %}
+                    {% include 'shineon-app-icons' with 'star-rating' %}
+                    {% endfor %}
+                  </div>
+                  <h4>{{ review.settings.author }}</h4>
+                  <div>{{ review.settings.text }}</div>
+                </div>
+              {% endfor %}
+
+            {% else %}
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>Orlando Virgen</h4>
+                <p>My order came in fast and I'm happy with it.</p>
+              </div>
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>Ali Azhar</h4>
+                <p>Great Service!</p>
+              </div>
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>Serena Woosley</h4>
+                <p>Beautiful looks exactly like the picture!</p>
+              </div>
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>RMC</h4>
+                <p>Good service</p>
+              </div>
+              {% unless template contains 'cart' %}
+              <div class="custom-review-toggle"> <span class="custom-read-more">        <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">         <circle cx="17.5" cy="17.5" r="16.5" stroke="#1A2A47" stroke-width="2"></circle>          <path d="M17.712 17.008H23.112V18.448H17.712V23.848H16.272V18.448H10.872V17.008H16.272V11.608H17.712V17.008Z" fill="black"></path>        </svg>        <i>Read More Reviews</i></span> <span class="custom-read-less">       <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">         <circle cx="17.5" cy="17.5" r="16.5" stroke="#1A2A47" stroke-width="2"></circle>          <path d="M17.712 17.008H23.112V18.448H17.712V23.848H16.272V18.448H10.872V17.008H16.272V11.608H17.712V17.008Z" fill="black"></path>        </svg>        <i>Read Less Reviews</i>      </span> </div>
+              {% endunless %}
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>Cynthia Young</h4>
+                <p>Excellent ......</p>
+              </div>
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>Jeneice  Warton</h4>
+                <p>Very Beautiful Items
+                  <br>Good people to buy from and very honest people
+                  <br>And on time
+                  <br>Please buy from them </p>
+              </div>
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>Jose Nava</h4>
+                <p>My wife loved it! I am currently deployed and she felt the love that I have for her and how much she's appreciated because of this awesome gift. Thank you. </p>
+              </div>
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>Randy</h4>
+                <p>excellent customer service</p>
+              </div>
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>Joy Ruby</h4>
+                <p>It's beautiful</p>
+              </div>
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>SandyL</h4>
+                <p>Website was easy to use and the engraving on the necklace I bought was so beautiful👍👍👍👍👍 </p>
+              </div>
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>Mark Burner</h4>
+                <p>Great fast shipping!!!!!</p>
+              </div>
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>Ian Fremantle</h4>
+                <p>An excellent product, and excellent service. Ian Femantle </p>
+              </div>
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>Lori Duvall</h4>
+                <p>Beautiful product, quick service!</p>
+              </div>
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>Chester  Dell</h4>
+                <p>Excellent. So in love</p>
+              </div>
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>William Jacobson</h4>
+                <p>I received the necklace we’ll be for my wife’s birthday.
+                  <br>Thank you she loved it. </p>
+              </div>
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>Jeffrey Bossard</h4>
+                <p>easy to order, recieved the day they said it would be delivered.</p>
+              </div>
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>Matt Johnson</h4>
+                <p>Very happy with everything thanks</p>
+              </div>
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>robert moody</h4>
+                <p>It was awesome and fast. Thank you</p>
+              </div>
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>MARVIN ESPINA</h4>
+                <p>Ordered a necklace for my Daughter and received it in 5 days! Wow</p>
+              </div>
+              <div class="custom-reviews-tile">
+                <div class="stars-rating">
+                  {% for i in (1..5) %}
+                  {% include 'shineon-app-icons' with 'star-rating' %}
+                  {% endfor %}
+                </div>
+                <h4>Bill Wehinger</h4>
+                <p>Awesome service</p>
+              </div>
+            {% endif %}
+          </div>
+
+          {% unless template contains 'cart' %}
+
+            <div id="looxReviews" data-product-id="{{product.id}}" class="loox-reviews-default">{{ product.metafields.loox.reviews }}</div>
+
+          {% endunless %}
+
+        {% else %}
+
+          {% unless template contains 'cart' %}
+          
+            <div id="looxReviews" data-product-id="{{product.id}}" class="loox-reviews-default">{{ product.metafields.loox.reviews }}</div>
+
+          {% else %}
+
+            <div id="looxReviews" data-loox-aggregate data-or-productIds="{{ cart.items | map: 'product' | map: 'id' | join: ',' }}" data-visibility="hide_when_empty"></div>
+
+          {% endunless %}
+
+        {% endif %}
+
+      {% endif %}
+    </div>
+
+  {% when 'description' %}
+
+    <div class="so-product-description-wrap">
+
+      {% if show_tabs_if_right_side == false %}
+        <div class="so-hidden-sm">
+          {{ copy_delivery_details }}
+        </div>
+      {% endif %}
+
+      {% include 'product-info-shineon' with 'description-delivery-tabs' %}
+
+    </div>
+
+    {{ section.settings.snippet_below_delivery }}
+
+  {% when 'description-delivery-tabs' %}
+
+    <div class="so-tabs-wrapper{% if hide_tabs_if_left_side_or_hidden %} so-visible-sm{% endif %}{% if show_tabs_if_right_side == true %} so-tabs-right-side{% endif %}">
+      <ul class="so-tabs so-tabs-product"{% if shop.permanent_domain == 'shineon-platform.myshopify.com' or shop.permanent_domain == 'garnet-platform.myshopify.com' %} id="announcement-shipping-anchor"{% endif %}>
+        <li{% if section.settings.show_about_us_review_list == true %} class="so-active"{% endif %}{% unless section.settings.content_disposition == 'right_side_collapsed' %} class="so-active"{% endunless %}>
+          <a href="#" data-panel="product-tab-{{ product.id }}-1">{% include 'shineon-app-icons' with 'info' %}{{ 'purchase_form_description_tab_title' | t }}<span class="so-toggle"></span></a>
+        </li><li{% if section.settings.content_disposition == 'right_side_collapsed' and section.settings.show_about_us_review_list != true %} class="so-active"{% endif %}>
+            <a href="#" data-panel="product-tab-{{ product.id }}-2">{% include 'shineon-app-icons' with 'delivery' %}{{ 'purchase_form_delivery_tab_title' | t }}<span class="so-toggle"></span></a>
+        </li>
+        </li>
+        {% if section.settings.show_badges_as_section != false and section.settings.show_about_us_review_list != false %}
+        <li>
+            <a href="#" data-panel="product-tab-{{ product.id }}-3">{% include 'shineon-app-icons' with 'guarantees' %}{{ 'purchase_form_guarantee_tab_title' | t }}<span class="so-toggle"></span></a>
+        </li>
+        {% endif %}
+      </ul>
+      <ul class="so-tabs-content so-tabs-content-product">
+        <li id="product-tab-{{ product.id }}-1"{% if section.settings.content_disposition == 'right_side_collapsed' and section.settings.show_about_us_review_list != true %} class="so-hidden"{% endif %}>
+            {% assign show_bu_sup_description = false %}
+            {% if product.metafields.shineon.uploadable == 1 and section.settings.content_below_upload_step != blank and section.settings.show_about_us_review_list == true %}
+              <div class="so-bu-supplemental-content">
+                  {{ section.settings.content_below_upload_step }}
+              </div>
+              {% assign show_bu_sup_description = true %}
+            {% endif %}
+
+            <div{% if show_bu_sup_description == true %} class="product-content-from-admin"{% endif %} itemprop="description">{{ product.content }}</div>
+        </li>
+        <li id="product-tab-{{ product.id }}-2" class="{% if section.settings.content_disposition == 'right_side_collapsed' and section.settings.show_about_us_review_list != true %} so-active{% else %} so-hidden{% endif %}">
+
+          {{ copy_delivery_details }}
+          
+        </li>
+        {% if section.settings.show_badges_as_section != false and section.settings.show_about_us_review_list != false %}
+        <li id="product-tab-{{ product.id }}-3" style="display:none;">
+          {% if section.settings.trust_section_type == 'badges' and badge_counter > 0 %}
+
+          <div class="badges">
+            <section class="section-badges">
+              <div class="section-header">
+                <h3 class="header text-center">{{ section.settings.badges_title | replace: '[reason_counter]', badge_counter }}</h3>
+              </div>
+
+              <div class="content">
+                {% include 'badges-shineon' with 'callout-shop-badges' %}
+              </div>
+            </section>
+          </div>
+          
+          {% else %}
+
+            {% include 'badges-shineon' with 'trust-single-image' %}
+
+          {% endif %}
+
+          {{ section.settings.snippet_below_trust_section }}
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+
+  {% when 'description-delivery-combined' %}
+
+    <div class="so-tabs-wrapper{% if hide_tabs_if_left_side_or_hidden %} so-visible-sm{% endif %}{% if show_tabs_if_right_side == true %} so-tabs-right-side{% endif %}">
+
+      {% assign show_bu_sup_description = false %}
+      {% if product.metafields.shineon.uploadable == 1 and section.settings.content_below_upload_step != blank and section.settings.show_about_us_review_list == true %}
+        <div class="so-bu-supplemental-content">
+            {{ section.settings.content_below_upload_step }}
+        </div>
+        {% assign show_bu_sup_description = true %}
+      {% endif %}
+
+      <div{% if show_bu_sup_description == true %} class="product-content-from-admin"{% endif %} itemprop="description">{{ product.content }}</div>
+
+      <div style="margin-top: 20px;">
+        {{ copy_delivery_details }}
+      </div>
+    </div>
+
+  {% when 'price' %}
+
+    <div itemprop="offers" itemscope itemtype="http://schema.org/Offer"
+         class="so-product-pricing" style="font-size: {{ section.settings.variant_price_size }}px;">
+      <meta itemprop="price" content="{{ variant_item.price | money_without_currency }}">
+      <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+      <p class="so-price-container unstyled">{% if section.settings.variant_price_show_compare_at and saved_value > 0 %}<span class="so-compare-at-label-wrap">{% if allow_show != true %}<span class="so-compare-at-label">{{ so_current_variant.compare_at_price | money }}</span>{% endif %}</span>{% endif %}<span class="so-price-label money">{{ product.selected_or_first_available_variant.price | money }}</span></p>
+    </div><!-- END so-product-pricing -->
+
+  {% when 'so-product-price' %}
+
+    {% assign show_quantity = false %}
+    {% if product.metafields.shineon.theme_options.show_quantity_input == true and product.available == true %}
+      {% assign show_quantity = true %}
+    {% endif %}
+    <div class="so-product-price{{ classes_to_wrap }}{% if show_quantity == true %} so-price-show-quantity{% endif %}">
+      {% assign compare_at_price = product.selected_or_first_available_variant.compare_at_price %}
+      {% assign price = product.selected_or_first_available_variant.price %}
+
+      {% assign saved_value = compare_at_price | minus: price %}
+      {% if saved_value > 0 %}
+        {% assign save_value_percent = compare_at_price | minus: price | times: 100 | divided_by: compare_at_price %}
+        {% assign save_value_money = compare_at_price | minus: price | money_without_trailing_zeros %}
+      {% endif %}
+
+      {% assign money_price = price | money_without_trailing_zeros %}
+
+      <div class="product__price {% if product.metafields.shineon.theme_options.show_quantity_input == true and product.available == true %}with-quantity-selector{% endif %}">
+
+        {% assign variant_item = base_variant %}
+        {% include 'product-info-shineon' with 'price' %}
+
+        {% if saved_value > 0 and section.settings.variant_price_show_savings == true and product.metafields.shineon.displayed_coupon.code == null %}
+        <p class="price-save unstyled">{{ 'save_html' | t: saved_amount_money: save_value_money, saved_amount_percent: save_value_percent }}</p>
+        {% endif %}
+      </div><!-- END so-product-pricing -->
+
+      {% if show_quantity == true %}
+        <div class="product-quantity-w" style="margin : 0 !important;">
+          {% include 'product-info-shineon' with 'quantity' %}
+        </div>
+      {% elsif product.available == true %}
+        <input type="hidden" name="quantity" value="1" required />
+      {% endif %}
+
+      {{ section.settings.snippet_below_pricing }}
+    </div>
+
+    {% if warranty_tag != false %}
+    <div class="product-additions-subtotal"{% if warranty_tag != false and is_warranty_added == false %} style="display: none;" {% endif %}>Subtotal: <strong class="price-with-additions">{{ product.selected_or_first_available_variant.price | plus: warranty_prod.price | money }}</strong></div>
+    {% endif %}
+
+  {% when 'quantity' %}
+
+    <div class="product-quantity-w">
+      <div class="so-field-wrap so-quantity-selector-wrap">
+        {% assign purchase_form_quantity_copy = 'purchase_form_quantity_copy' | t %}
+        {% if purchase_form_quantity_copy != '' %}
+        <label class="so-option-label" for="quantity">
+          {{ purchase_form_quantity_copy }}
+        </label>
+        {% endif %}
+        <div class="so-quantity-selector">
+          <span class="so-quantity-change so-quantity-minus" data-quantity="minus"></span><!--
+          --><span><input class="so-cart-qty-input" type="text" name="quantity" step="1" min="1" value="1" required /></span><!--
+          --><span class="so-quantity-change so-quantity-plus" data-quantity="plus"></span>
+        </div>
+      </div><!-- END so-field-wrap so-quantity-selector-wrap -->
+    </div>
+
+  {% when 'payment-icons' %}
+
+    {% assign payment_options = "payment_option_visa,payment_option_master,payment_option_american_express,payment_option_discover,payment_option_apple_pay,payment_option_amazon,payment_option_paypal" | split: ',' %}
+    <div class="so-payment-options">
+      {% for payoption in payment_options %}
+        {% if section.settings[payoption] %}
+          {% assign payoption_method = payoption | replace: 'payment_option_', '' %}
+          <img src="{{ payoption_method | payment_type_img_url }}" alt="{{ payoption_method | capitalize }}" />
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  {% when 'free-shipping' %}
+
+    <div class="text-center free-shipping">
+      {% include 'shineon-icons' with 'delivery' %}
+      <span>{{ settings.free_shipping_copy }}</span>
+    </div>
+
+  {% when 'button-atc' %}
+
+    <div class="so-btn-add-to-cart-wrap" id="so-btn-add-to-cart-w">
+      {% if is_ring %}
+      <div style="position:relative;">
+      <div class="so-atc-overlay"></div>
+      {% endif %}
+      <button id="so-btn-add-to-cart-{{ product.id }}"
+          class="so-form-btn-cta-main so-btn-add-to-cart{% if is_ring or product.available == false %} disabled{% endif %}"
+          style="background-color: {{ section.settings.add_to_cart_bg_color }};
+             border: 1px solid {{ section.settings.add_to_cart_bg_color }};
+             color: {{ section.settings.add_to_cart_fg_color }};
+             font-size: {{ section.settings.add_to_cart_font_size_range }}px"
+          {% if is_ring or product.available == false %}
+          disabled="disabled"
+          {% endif %}{% if add_upsell_modal == false %}
+          type="submit"{% endif %}>
+
+        {% if product.available == true %}
+          {% if section.settings.add_to_cart_append_line_item_subtotal %}
+            <span id="so-btn-add-to-cart-prefix">{{ so_current_variant.price | money }} -</span>
+          {% endif %}
+
+          <span id="so-btn-add-to-cart-suffix-wrap" class="so-btn-add-to-cart-suffix-wrap so_nobreak">
+            {% include 'shineon-app-icons' with 'shopping-cart' %}
+            {% if product.metafields.shineon.theme_options.show_quantity_input == false and section.settings.add_to_cart_append_line_item_subtotal %}
+              <span id="so-btn-add-to-cart-suffix"  class="so-btn-add-to-cart-vanity-suffix"
+                data-singular="{{ 'purchase_form_add_to_cart_button_text_item_label_singular' | t }}"
+                data-plural="{{ 'purchase_form_add_to_cart_button_text_item_label_plural' | t }}">
+              (1 {{ 'purchase_form_add_to_cart_button_text_item_label_singular' | t }})
+              </span>
+            {% endif %}
+          </span>
+
+          <span class="so-btn-add-to-cart-vanity-copy" id="so-btn-add-to-cart-copy">
+              <span>{{ 'purchase_form_add_to_cart_text' | t }}</span>
+          </span>
+        {% else %}
+          {{ 'purchase_form_btn_add_to_cart_sold' | t }}
+        {% endif %}
+
+      </button>
+      {% if is_ring %}
+      </div>
+      {% endif %}
+
+      <div class="shopmessage-checkbox"></div>
+    </div><!-- END so-btn-add-to-cart-wrap -->
+    <div class="custom-blank-ele"></div>
+    <span class="so-btn-action-fixed" data-id="so-btn-add-to-cart-w"></span>
+
+  {% when 'product-title-with-rating' %}
+    {% if shop.permanent_domain == 'shineon-platform.myshopify.com' or shop.permanent_domain == 'garnet-platform.myshopify.com' %}
+      {% include 'request-host' %}
+    {% endif %}
+
+    <div itemscope itemtype="http://schema.org/Brand" class="so-hidden">
+      <meta itemprop="name" content="{{ company_name }} Jewelry">
+      {% if logo_src %}<meta itemprop="logo" content="{{ logo_src }}" />{% endif %}
+      <meta itemprop="description" content="{{ shop.description }}" />
+      <meta itemprop="url" content="{{ shop_domain }}{{ product.url }}" />
+    </div>
+
+    <div class="with-rating">
+
+      {% include 'product-info-shineon' with 'reviews-counter' %}
+
+      {% assign so_prod_title = product.title | json %}
+      {% assign so_prod_title_mobile = product.title | truncate: 48 | json %}
+
+      <div class="so-product-title">
+        <h1 itemprop="name" class="so">{{ product.title }}</h1>
+      </div><!-- END so-product-title -->
+
+      <div class="so-hidden-sm">
+      {% if shop.permanent_domain == 'shineon-platform.myshopify.com' or shop.permanent_domain == 'garnet-platform.myshopify.com' %}
+        <span class="prod-id">{{ prod_id }}</span>
+      {% endif %}
+      </div>
+
+      {% capture snippet_content %}{% include 'shineon-below-title' %}{% endcapture %}
+      {% unless snippet_content contains "Liquid error" %}
+        {{ snippet_content }}
+      {% endunless %}
+
+      {{ section.settings.snippet_below_title }}
+
+      <div class="so-product-reviews-summary">
+        <!-- PRODUCT REVIEWS SUMMARY CODE -->
+      </div>
+    </div>
+
+  {% when 'info-modal' %}
+
+    {% comment %} BEGIN: INFO MODAL {% endcomment %}
+    {% assign additional_product = all_products[product_handle] %}
+    <div class="so-modal fade"
+       id="modal-info"
+       tabindex="-1"
+       role="dialog">
+      <div class="so-modal-dialog so-modal-lg so-modal-box" role="document">
+        <div class="so-modal-content">
+
+          <div class="so-modal-header">
+            <button type="button"
+                class="close"
+                data-dismiss="so-modal"
+                aria-label="Close">
+            <span aria-hidden="true"></span>
+            </button>
+          </div><!-- END so-modal-header -->
+
+          <div class="so-modal-body so-modal-body-info">
+            <h2 class="content-header">
+              <span class="content-header-icon"><img src="{{ additional_product.featured_image | img_url: '34x33' }}" alt=""></span>
+              <!-- /.content-header-icon -->
+              <p>{{ additional_product.title }}</p>
+            </h2>
+            {{ additional_product.description }}
+          </div>
+          <!-- /.so-modal-body -->
+        </div><!-- END modal-content -->
+      </div><!-- END modal-dialog -->
+    </div><!-- END modal -->
+
+  {% when 'upsell-modal' %}
+
+    {% comment %} BEGIN: SOPP MODAL {% endcomment %}
+    <div class="so-modal so-modal-e-and-g-upsell fade engraving-only"
+       id="modal-{{ product_form_id }}"
+       tabindex="-1"
+       role="dialog">
+      <div class="so-modal-dialog so-modal-lg so-modal-box" role="document">
+      <form class="so-product-form"
+          action="/cart/add"
+          method="post"
+          enctype="multipart/form-data"
+          id="{{ product_form_id }}"
+          data-section="{{ section.id }}"
+          data-uploadable="{{ product.metafields.shineon.uploadable }}"
+          data-use_shineon_cart_page_eng="{{ section.settings.use_shineon_cart_page_eng }}"
+          data-use_shineon_cart_page_bu="{{ section.settings.use_shineon_cart_page_bu }}"
+          data-express_checkout="{{ section.settings.express_checkout }}"
+          data-google_analytics_id="{{ shop.metafields.shineon.google_analytics_id }}">
+        <div class="so-modal-content">
+
+          <div class="so-modal-header">
+            <button type="button"
+                class="close"
+                data-dismiss="so-modal"
+                aria-label="Close">
+            <span aria-hidden="true"></span>
+            </button>
+          </div><!-- END so-modal-header -->
+
+          <div class="so-upsell-body">
+            <div class="so-modal-image-w">
+              <div class="so-modal-image">
+                <div class="so-modal-engraving-featured-img-wrap">
+                  <img class="so-modal-product-featured-img"
+                       src="{{ so_modal_product_featured_img }}" />
+                </div><!-- END so-modal-engraving-featured-img-wrap -->
+              </div><!-- so-modal-image -->
+            </div><!-- END so-col-6 so-modal-image-w" -->
+            <div class="so-modal-upsell-text-w">
+              <div class="so-modal-upsell-text">
+                <div class="ribbon-offer"></div>
+                <div class="so-modal-upsell-heading-with-arrow">
+                  <span class="theme-shineon-sprite upsell-arrow"></span>
+                  <div class="so-modal-upsell-text-heading">
+                    {{ so_modal_upsell_text_heading }}
+                  </div>
+                </div>
+
+                {% if has_engraving == true %}
+                  {% if section.settings.modal_engraving_savings_percentage > 0 %}
+                  <div class="so-modal-upsell-pricing-with-arrow">
+                      {% assign purchase_form_modal_callout_engraving_secondary = 'purchase_form_modal_callout_engraving_secondary' | t %}
+                      {% assign purchase_form_modal_callout_engraving_secondary = purchase_form_modal_callout_engraving_secondary | replace: '##', section.settings.modal_engraving_savings_percentage %}
+                    <div class="so-modal-upsell-pricing-w">
+                      <div class="so-modal-upsell-pricing">
+                        <span class="compare_at_price">{{ upsell_engraving_original_price | money }}</span>
+                        <span class="regular_price">{{ upsell_engraving_price | money }}</span>
+                      </div><!-- END so-modal-upsell-pricing -->
+                      <p class="price-off unstyled">({{ section.settings.modal_engraving_savings_percentage }}% OFF)</p>
+                    </div>
+                  </div>
+                  {% endif %}
+                {% else %}
+                  <div class="so-modal-upsell-pricing-with-arrow">
+                    {% assign price_box = product.variants[1].price %}
+                    {% assign price_regular = product.variants[0].price %}
+                    {% assign saving_percentage = 0.5 %}
+                    {% assign price = price_box | minus: price_regular %}
+                    {% assign compare_at_price = price | divided_by: saving_percentage %}
+
+                    <div class="so-modal-upsell-pricing-w">
+                      <div class="so-modal-upsell-pricing">
+                        <span class="compare_at_price">{{ compare_at_price | money }}</span>
+                        <span class="regular_price">{{ price | money }}</span>
+                      </div><!-- END so-modal-upsell-pricing -->
+                      <p class="price-off unstyled">({{ saving_percentage | times: 100 | round }}% OFF)</p>
+                    </div>
+                  </div>
+                {% endif %}
+
+                {% if so_current_variant.metafields.shineon.generated_properties.size > 0 %}
+                  <!-- If has generated properties in metafields -->
+                  {% assign inputs = so_current_variant.metafields.shineon.generated_properties.inputs %}
+                  {% assign engraved = false %}
+                  {% assign is_any_field_required = false %}
+                  {% for input in inputs %}
+                    {% if input.field_type == "engraving" and input.required == 1 %}
+                      {% assign engraved = true %}
+                    {% endif %}
+                    {% if input.required == 1 %}
+                      {% assign is_any_field_required = true %}
+                    {% endif %}
+                  {% endfor %}
+                  {% if is_any_field_required == false %}
+                    <div class="so-custom-fields-wrap-without-grid-display">
+                      {% for input in inputs %}
+                        {% capture loop_index %}{% increment loop %}{% endcapture %}
+                        {% assign required = "" %}
+                          {% if input.required == 1 %}
+                            {% assign required = "required" %}
+                          {% endif %}
+                        {% assign input_label = input.label %}
+                        {% assign input_placeholder = input.placeholder %}
+                        {% assign input_class = input.class %}
+                        {% for locale in input.locales %}
+                          {% if shop.locale contains locale[0] %}
+                            {% assign input_label = locale[1].label %}
+                            {% assign input_placeholder = locale[1].placeholder %}
+                          {% endif %}
+                        {% endfor %}
+                        {% if input.field_type == "ring_size" %}
+                          <div class="so-custom-field-wrap {{ input.grid }}">
+                            <label for="{{ input.id }}">{{ input_label }}</label>
+                            <select name="properties[{{ input.name }}]" id="{{ input.id }}" class="{{ input.class }}" {{ required }}>
+                              <option selected disabled>{{ input_placeholder }}</option>
+                              {% for option in input.options %}
+                                <option value="{{ option }}">{{ option }}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        {% elsif input.field_type == "birthstone" %}
+                          <div class="so-custom-field-wrap">
+                            <label class="so-option-label">{{ input.label }}</label>
+                            <div class="so-custom-field-birthstone-wrap">
+                              {% for option in input.options %}
+                                <label for="so-custom-field-radio-{{ option }}" class="so-custom-field-birthstone-label">
+                                  <input
+                                      id="so-custom-field-radio-{{ option }}"
+                                      class="{{ input.class }}"
+                                      type="radio"
+                                      name="properties[{{ input.name }}]"
+                                      value="{{ option }}"
+                                      data-src-bigimg="https://cdn.shopify.com/s/files/1/0077/2420/4096/files/bs-{{ option }}_x100.png"
+                                      {{ required }}
+                                       />
+                                  {% if section.settings.birthstone_style_selector != "no-stones" %}
+                                    <div class="so-custom-field-birthstone-circle {{ option }}"></div>
+                                  {% endif %}
+                                  {% if section.settings.birthstone_style_selector != "no-months" %}
+                                    {{ option | truncate: 3, "" }}
+                                  {% endif %}
+                                </label>
+                              {% endfor %}
+                              <div id="big-img-w" style="display: none; min-height: 100px;">
+                                <img src="" id="big-img">
+                              </div>
+                            </div>
+                          </div>
+                        {% elsif input.field_type == 'engraving' %}
+                          {% if is_cross != false and input_placeholder == 'JC' %}
+                            {% assign input_class = input_class | append: ' so-input-cross-front' %}
+                          {% endif %}
+
+                          {% assign appended_label = '_label' %}
+                          {% if is_cross != false %}
+                            {% assign appended_label = '_label_cross' %}
+                          {% endif %}
+
+                          {% assign input_placeholder_translation = 'purchase_form_engraving_copy_line' | append: forloop.index | append: appended_label %}
+                          {% assign input_placeholder = input_placeholder_translation | t %}
+
+                          <div class="so-custom-field-wrap ">
+                            <input type="{{ input.type }}"
+                               name="properties[{{ input.name }}]"
+                               id="{{ input.id }}"
+                               class="{{ input_class }}"
+                               placeholder="{{ input_placeholder }}"
+                               maxlength="{{ input.maxlength }}"
+                               minlength="{{ input.minlength }}"
+                               {{ required }} />
+                          </div>
+                        {% else %}
+                          <div class="so-custom-field-wrap">
+                          {% if input.type != 'none' %}
+                          <label class="so-text-normal-i" for="{{ input.id }}">{{ input_label }}</label>
+                          {% endif %}
+                          {% if input.type == 'radio' %}
+                            {% for option in input.options %}
+                            {% if option == input.value %}
+                              <label>
+                              <input type="radio" name="properties[{{ input.name }}]" value="{{ option }}" checked />
+                              {{ option }}
+                              </label>
+                            {% endif %}
+                            <label>
+                              <input type="radio" name="properties[{{ input.name }}]" value="{{ option }}" />
+                              {{ option }}
+                            </label>
+                            {% endfor %}
+                          {% elsif input.type == 'select' %}
+                            <select name="properties[{{ input.name }}]" id="{{ input.id }}">
+                            {% for option in input.options %}
+                              {% if option == input.value %}
+                              <option value="{{ option }}" selected>{{ option }}</option>
+                              {% endif %}
+                              <option value="{{ option }}">{{ option }}</option>
+                            {% endfor %}
+                            </select>
+                          {% elsif input.type == 'text' %}
+                            <input type="{{ input.type }}"
+                               name="properties[{{ input.name }}]"
+                               id="{{ input.id }}"
+                               class="{{ input.class }}"
+                               placeholder="{{ input_placeholder }}"
+                               maxlength="{{ input.maxlength }}"
+                               minlength="{{ input.minlength }}"
+                               {{ required }} />
+                          {% endif %}
+                          </div>
+                        {% endif %}
+                        {{ input.html_chunk }}
+                        {% capture loop_index %}{% increment loop %}{% endcapture %}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                {% endif %}
+
+                <div class="so-modal-btn-add-to-cart-wrap">
+                  <input type="hidden" name="id" value="{{ so_current_variant.id }}" />
+                  <input type="hidden" name="quantity" value="1" required />
+                  <button id="so-modal-btn-add-to-cart-{{ product.id }}"
+                      class="so-modal-btn-add-to-cart so-btn-add-to-cart-vanity so-modal-btn-add-to-cart-{{ product.id }} active"
+                      type="submit"
+                      style="background-color: {{ section.settings.add_to_cart_bg_color }};">
+                    <span class="so-modal-btn-add-to-cart-copy">
+                    {{ 'purchase_form_modal_proceed_with_upsell' | t }}
+                    </span>
+                  </button>
+                  <div class="so-modal-btn-add-base-to-cart-wrap">
+                    <a href="#" class="so-modal-btn-add-base-to-cart">
+                    {% if is_wooden_box == true %}
+                    {{ 'purchase_form_modal_continue_without_upsell' | t }}
+                    {% elsif featured_engraved_img != false %}
+                    {{ 'purchase_form_modal_continue_without_upsell' | t }}
+                    {% else %}
+                    {{ 'purchase_form_modal_continue_without' | t }}
+                    {% endif %}
+                    </a>
+                  </div><!-- END so-modal-btn-add-base-to-cart-wrap -->
+                </div><!-- END so-modal-btn-add-to-cart-wrap -->
+              </div><!-- END so-modal-upsell-text -->
+            </div><!-- END so-col-6 so-modal-upsell-text-w -->
+          </div><!-- END so-upsell-body -->
+
+        </div><!-- END modal-content -->
+
+      </form><!-- END so-product-form -->
+
+      </div><!-- END modal-dialog -->
+
+    </div><!-- END modal -->
+    {% comment %} END: SOPP MODAL {% endcomment %}
+
+  {% when 'meta-itemprop' %}
+    {% if shop.permanent_domain == 'shineon-platform.myshopify.com' or shop.permanent_domain == 'garnet-platform.myshopify.com' %}
+      {% include 'request-host' %}
+    {% endif %}
+
+    <meta itemprop="url" content="{{ shop_domain }}{{ product.url }}">
+    <meta itemprop="image" content="{{ product.featured_image.src | img_url: 'grande' }}">
+    <meta itemprop="brand" content="{{ company_name }} Jewelry">
+
+  {% when 'warranty' %}
+    {% assign warranty_product = all_products['warranty'] %}
+    {% assign warranty_product_price = warranty_product.price | money %}
+    {% assign warranty_product_image = warranty_product.featured_image | img_url: '34x33' %}
+    {% comment %}
+      warranty_tag is a theme section settings. Can be found in section file
+    {% endcomment %}
+    {% if warranty_tag != false %}
+    <div class="so-warranty-div">
+      <div class="so-warranty-div-header">
+        Premium Addons
+      </div>
+      <label>
+        <div class="warranty">
+          <input type="checkbox" name="so-warranty-app" data-prod-id="{{ warranty_prod.id }}" data-key="{{ warranty_prod_cart_line.key }}" data-variant-id="{{ warranty_prod.variants[0].id }}" class="so-warranty-add-remove"{% if is_warranty_added == true %} checked="checked"{% endif %} autocomplete="off">
+
+          {% if section.settings.warranty_show_checkbox_as_toggler == true %}
+            <span class="toggler-checkbox"></span>
+          {% else %}
+            <span class="input-checkbox-styled">{% include 'shineon-app-icons' with 'checked-checkbox' %}</span>
+          {% endif %}
+
+          <div class="description-icon">
+            <div class="icon">
+              {% include 'shineon-app-icons' with 'warranty-image' %}
+            </div>
+            <div class="description">
+              <div class="header-with-info">
+                <p class="header">
+                  {{ warranty_product.title }} - {{ warranty_product_price }}
+                </p>
+                <a href="#" class="info-icon">
+                  {% include 'shineon-app-icons' with 'info' %}
+                </a>
+              </div>
+              <p class="text">{{ warranty_product.metafields.shineon.subheader_text | replace: '[price]', '' }}</p>
+            </div>
+          </div>
+        </div>
+      </label>
+    </div>
+    {% endif %}
+
+  {% when 'input_field_type_cuntom_not_none-select' %}
+    <div class="so-custom-field-wrap {{ input.grid }}">
+      <label for="{{ input.id }}">{{ input_label }}</label>
+      {% if input.class contains 'select-centered' %}
+        <div class="select-centered-wrap">
+          <span class="select-centered-placeholder">{{ input_placeholder }}</span>
+      {% endif %}
+      <select name="properties[{{ input.name }}]" id="{{ input.id }}" class="{{ input.class }}" {{ required }}>
+      {% if input.class contains 'select-centered' %}
+        {% assign input_placeholder = '' %}
+      {% endif %}
+        <option selected disabled>{{ input_placeholder }}</option>
+        {% for option in input.options %}
+          <option value="{{ option }}">{{ option }}</option>
+        {% endfor %}
+      </select>
+      {% if input.class contains 'select-centered' %}
+        </div>
+      {% endif %}
+    </div>
+
+  {% when 'swatches' %}
+
+    {% assign so_translation = metal_label | t %}
+    {% if metal_label == null or metal_label == '' %}
+      {% assign so_translation = variant.option1 %}
+    {% endif %}
+    <div class="so-col-6-sm so-label-cell-pad so-variant-change so-option-index-0{% unless display_option1_style == true %} so-variant-change-metal so-variant-change-metal-{{ data_metal }} {{ variant_active }} {{ variant_visibility }} {{ variant_metal_visibility }}{% endunless %}{% if out_of_stock == true %} out-of-stock{% endif %}" data-variant_id="{{ variant.id }}" data-metal="{{ data_metal }}" data-gold="{{ data_metal_gold }}" data-option="option1" data-option1="{{ variant.option1 | escape }}" data-option2="{{ variant.option2 | escape }}" data-option3="{{ variant.option3 | escape }}" data-accessory-quantity="{{ data_accessory_quantity }}">
+      <label class="so-swatch{% if is_wooden_box == true %} so-swatch-with-box{% endif %}">
+        <div class="so-label-symbol-wrap">
+          <span class="so-swatch-metal so-swatch-metal-{{ data_metal }}"></span>
+          <span class="so-translation">{% if is_wooden_box == true and wooden_box_variant_id == variant.id %}
+          <span class="box-icon wooden-box">{% include 'shineon-app-icons' with 'box-icon-wooden' %}</span>
+          {% endif %}
+          {% if is_wooden_box == true and regular_variant_id == variant.id %}
+          <span class="box-icon oreo-box">{% include 'shineon-app-icons' with 'box-icon-oreo' %}</span>
+          {% endif %} {{ so_translation }}</span> {% if out_of_stock == true %}<i class="notification">{{ 'purchase_form_out_of_stock' | t }}</i>{% endif %}
+        </div>
+      </label>
+    </div><!-- END so-label-cell-pad so-variant-change so-option-index-0-->
+
+{% endcase %}

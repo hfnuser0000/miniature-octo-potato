@@ -1,0 +1,24 @@
+<!-- BEGIN SHINEON CART TEMPLATE UPGRADE v0.5.7 -->
+
+{% comment %}
+  Page preloader
+{% endcomment %}
+<script type="text/javascript">
+  document.body.classList.add('loading');
+</script>
+
+{% include 'product-shineon-custom-styles' %}
+{% include 'product-shineon-scripts' with 'analytics-scripts' %}
+<script src="{{ 'theme-shineon.js' | asset_url }}" defer></script>
+
+<script>
+{% for item in cart.items %}
+  document.addEventListener("DOMContentLoaded", function () {
+    shineon.analytics.fb.send_event.init_pixel({{ item.product.metafields.shineon.fb_pixel_id }});
+  });
+{% endfor %}
+</script>
+
+{%- section 'cart-shineon' -%}
+
+<!-- END SHINEON CART TEMPLATE UPGRADE v0.5.7 -->

@@ -1,0 +1,16 @@
+.teeinblue-enabled .product-pricing {
+  display: none;
+}
+
+.tee-layer--smaller .tee-clipart {
+  max-width: 50px !important;
+}
+
+.tee-customization-wrapper [class*="tee-field--"][class$="-template"] .tee-clipart {
+  -ms-flex: 0 0 calc(12.5% - 15px);
+  flex: 0 0 calc(12.5% - 15px);
+}
+
+.tee-field.field--hide-heading .tee-field__heading > span:first-child {
+  display: none;
+}

@@ -1,0 +1,6 @@
+{% section 'static-cart' %}
+<!-- bcpo done -->
+
+<!-- start Recomatic code -->{% if cart.item_count > 0 %}<div class="recomatic-related-products-wrap product-section--container product-row--container"><h2 class='home-section--title'>{{ shop.metafields.recomatic.cart.headline }}</h2><div id="recomatic-related-products" data-widget="cart" data-product-ids="[{{ cart.items | map: 'product' | map: 'id' | join: ', ' }}]"></div></div>{% endif %}<!-- end Recomatic code -->
+
+{% include 'wiser_related' %}{% include 'wiser_recommended' %}{% include 'wiser_trending' %}{% include 'wiser_recentview' %}{% include 'wiser_newarrivals' %}{% include 'wiser_featured' %}{% include 'wiser_topselling' %}{% include 'wiser_recent_related' %}
