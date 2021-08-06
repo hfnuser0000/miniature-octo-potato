@@ -1153,7 +1153,7 @@ h4 {
 
 .mobile-nav-content .navmenu-depth-1 > .navmenu-item > .navmenu-link,
 .mobile-nav-primary-content .navmenu-depth-1 > .navmenu-item > .navmenu-link, .navmenu-meganav.navmenu-meganav--desktop .navmenu-item-text, .site-navigation .navmenu-depth-1 > li > a, .site-navigation a, .site-header-actions {
-  font-family: Assistant,sans-serif;
+  font-family: Raleway,sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: var(--font-size-menu);
@@ -18704,7 +18704,8 @@ rgb(255, 255, 255)
 
 .site-navigation {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  justify-content: center;
   background-color: 
 rgb(255, 255, 255)
 
