@@ -19909,6 +19909,11 @@ rgb(248, 248, 248)
   border-radius: 0;
   color: white;
 }
-.form-field-input + .newsletter-input .form-field-title {
-  top: -1rem;
+.newsletter-input .form-field-title {
+  color: white;
+}
+.newsletter-input .form-field-input:focus + .form-field-title {
+  top: -.5rem;
+  padding: 0 .5rem;
+  background-color: #292929;
 }
