@@ -19910,7 +19910,7 @@ rgb(248, 248, 248)
   color: white;
 }
 .newsletter-input .form-field-title {
-  color: white;
+  color: rgba(255,255,255,.6);
 }
 .newsletter-input .form-field-input:focus + .form-field-title {
   top: -.5rem;
