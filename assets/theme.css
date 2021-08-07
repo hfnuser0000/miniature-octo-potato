@@ -19896,6 +19896,11 @@ rgb(248, 248, 248)
   src: url(slate_n4.woff2) format("woff2");
   font-weight: 400;
 }
+@font-face {
+  font-family: "Slate";
+  src: url(slate_n2.woff2) format("woff2");
+  font-weight: 200;
+}
   
 .article--excerpt-wrapper--featured .article--excerpt-button, .button-primary, .button-secondary, .image-with-text__button, .live-search-button, .page__content button, .product-form--atc-button, .product-reviews--content .spr-summary-actions-newreview, .productgrid--no-results-button, .productgrid--search-button, .pxs-image-with-text-button, .shopify-challenge__container .btn, .shopify-payment-button .shopify-payment-button__button--unbranded, .slideshow-slide__button--primary, .slideshow-slide__button--secondary, .smart-payment-enabled .product-form--atc-button, .utils-sortby--modal-button,
 .form-field-input, .form-field-select, .option-value-input+.option-value-name, .product-reviews--content .spr-form .spr-form-input-email, .product-reviews--content .spr-form .spr-form-input-text, .product-reviews--content .spr-form .spr-form-input-textarea, .productgrid--sidebar-item-grid .filter-item:not(.filter-item--toggle-more) {
