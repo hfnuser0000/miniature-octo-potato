@@ -19912,7 +19912,8 @@ rgb(248, 248, 248)
 .newsletter-input .form-field-title {
   color: #ffffff99;
 }
-.newsletter-input .form-field-input:is(:focus) + .form-field-title {
+.newsletter-input .form-field-input:focus + .form-field-title,
+.newsletter-input .form-field-input:not([value=""]) + .form-field-title {
   top: -.5rem;
   padding: 0 .5rem;
   background-color: #292929;
