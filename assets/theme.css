@@ -19898,3 +19898,8 @@ rgb(248, 248, 248)
   flex-direction: column;
   padding-bottom: 1rem;
 }
+.newsletter-submit .button-primary {
+  background-color: #bd7c48;
+  border-color: #bd7c48;
+  border-radius: 0;
+}
