@@ -19903,3 +19903,8 @@ rgb(248, 248, 248)
   border-color: #bd7c48;
   border-radius: 0;
 }
+.newsletter-input input {
+  background-color: transparent;
+  border-color: white;
+  border-radius: 0;
+}
