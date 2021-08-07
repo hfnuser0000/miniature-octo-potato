@@ -19933,3 +19933,8 @@ rgb(248, 248, 248)
 body {
   font-family: Raleway,sans-serif !important;
 }
+.site-footer-block-content {
+  font-size: .87891rem;
+  padding-bottom: 1.17188rem;
+  line-height: 1.6;
+}
