@@ -19905,7 +19905,10 @@ rgb(248, 248, 248)
 }
 .newsletter-input input {
   background-color: transparent;
-  border-color: white;
+  border-color: white !important;
   border-radius: 0;
+  color: white;
+}
+.newsletter-input .form-field-title {
   color: white;
 }
