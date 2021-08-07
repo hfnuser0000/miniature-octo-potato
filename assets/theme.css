@@ -19926,6 +19926,7 @@ rgb(248, 248, 248)
 .newsletter-input .form-field-input:focus + .form-field-title,
 .newsletter-input .form-field-filled.form-field-input + .form-field-title {
   top: -.5rem;
+  left: .8rem;
   padding: 0 .5rem;
   background-color: #292929;
 }
