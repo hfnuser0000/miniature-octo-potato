@@ -141,7 +141,6 @@
         "settings": {
           "sticky_header": true,
           "full_width_header": false,
-          "logo": "shopify:\/\/shop_images\/logo_CouplePrints_ngang_1.png",
           "logo_height": 75,
           "logo_width": 250,
           "filter_search_by": "disabled",
@@ -185,13 +184,13 @@
           "static-footer-0": {
             "type": "menu",
             "settings": {
-              "menu": "company-information"
+              "menu": ""
             }
           },
           "e67e255b-06a3-4419-b070-be4700b228ad": {
             "type": "menu",
             "settings": {
-              "menu": "customer-service"
+              "menu": ""
             }
           },
           "54bc4fdf-9e48-4aeb-b796-530ade970c8f": {
@@ -510,7 +509,6 @@
           "16244169808e317c71-0": {
             "type": "promotion",
             "settings": {
-              "image": "shopify:\/\/shop_images\/mua-hang-online-1620972206-8290-1620972622_2.jpg",
               "background_position": "center-center",
               "title": "",
               "text": "MANAGE ORDER",
@@ -526,7 +524,6 @@
           "16244169808e317c71-1": {
             "type": "promotion",
             "settings": {
-              "image": "shopify:\/\/shop_images\/delivery_2.png",
               "background_position": "center-center",
               "title": "",
               "text": "SHIPPING & DELIVERY",
@@ -542,7 +539,6 @@
           "88df7bfe-ed4c-4095-ad7a-a148992c4261": {
             "type": "promotion",
             "settings": {
-              "image": "shopify:\/\/shop_images\/holiday-shopping-1921658_640_2.jpg",
               "background_position": "center-center",
               "title": "",
               "text": "PAYMENT METHODS",
@@ -558,7 +554,6 @@
           "4c47c54a-fe13-4b18-9c66-bcb109654596": {
             "type": "promotion",
             "settings": {
-              "image": "shopify:\/\/shop_images\/guidance-on-customer-returns-and-refunds-for-small-business_2.jpg",
               "background_position": "center-center",
               "title": "",
               "text": "REPLACEMENT & REFUND",
@@ -712,43 +707,6 @@
           "text_alignment": "center"
         }
       },
-      "16279012322656a69e": {
-        "type": "dynamic-slideshow",
-        "blocks": {
-          "16279012322656a69e-0": {
-            "type": "slide",
-            "settings": {
-              "background_image": "shopify:\/\/shop_images\/banner.png",
-              "mobile_background_image": "shopify:\/\/shop_images\/banner_mobile.png",
-              "title": "Personalized Canvas Print",
-              "text": "We print photo canvas and make your love last forever",
-              "color": "#292929",
-              "link": "",
-              "text_alignment": "left",
-              "button_one_label": "design your own",
-              "button_one_link": "shopify:\/\/collections\/all-products",
-              "button_one_style": "secondary",
-              "button_two_label": "",
-              "button_two_link": "shopify:\/\/collections\/all-products",
-              "button_two_style": "primary",
-              "show_overlay": true,
-              "overlay_color": "#000000",
-              "overlay_opacity": 1
-            }
-          }
-        },
-        "block_order": [
-          "16279012322656a69e-0"
-        ],
-        "settings": {
-          "enable_autoplay": true,
-          "autoplay_duration": 8,
-          "slideshow_width": "full",
-          "slideshow_height": "medium",
-          "slideshow_height_mobile": "medium",
-          "slideshow_text_below_image": true
-        }
-      },
       "1627902898395f896d": {
         "type": "dynamic-highlights-banner",
         "blocks": {
@@ -756,7 +714,6 @@
             "type": "highlight",
             "settings": {
               "icon": "icon-delivery",
-              "image": "shopify:\/\/shop_images\/truck.png",
               "title": "",
               "text": "<p><strong>FREE US SHIPPING<\/strong><\/p><p>When you spend $99+<\/p>",
               "link": ""
@@ -766,7 +723,6 @@
             "type": "highlight",
             "settings": {
               "icon": "none",
-              "image": "shopify:\/\/shop_images\/badge.png",
               "title": "",
               "text": "<p><strong>PREMIUM QUALITY<\/strong><br\/>Product quality is guaranteed<br\/><\/p>",
               "link": ""
@@ -776,7 +732,6 @@
             "type": "highlight",
             "settings": {
               "icon": "none",
-              "image": "shopify:\/\/shop_images\/credit-card.png",
               "title": "",
               "text": "<p><strong>SECURE CHECKOUT<\/strong><\/p><p>Fully Secured SSL Checkout<\/p>",
               "link": ""
@@ -786,7 +741,6 @@
             "type": "highlight",
             "settings": {
               "icon": "icon-pin",
-              "image": "shopify:\/\/shop_images\/shop.png",
               "title": "",
               "text": "<p><strong>ALL MADE IN THE US<\/strong><\/p><p>And designed by CouplePrints<\/p>",
               "link": ""
@@ -811,7 +765,6 @@
       }
     },
     "content_for_index": [
-      "16279012322656a69e",
       "1627902898395f896d",
       "1627901210ac582e95",
       "16254727356fcf30fd",
