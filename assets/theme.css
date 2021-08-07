@@ -19906,7 +19906,21 @@ rgb(248, 248, 248)
 .form-field-input, .form-field-select, .option-value-input+.option-value-name, .product-reviews--content .spr-form .spr-form-input-email, .product-reviews--content .spr-form .spr-form-input-text, .product-reviews--content .spr-form .spr-form-input-textarea, .productgrid--sidebar-item-grid .filter-item:not(.filter-item--toggle-more) {
   font-family: Raleway,sans-serif;
 }
-  
+.form-field-input, .form-field-select, .option-value-input+.option-value-name, .product-reviews--content .spr-form .spr-form-input-email, .product-reviews--content .spr-form .spr-form-input-text, .product-reviews--content .spr-form .spr-form-input-textarea, .productgrid--sidebar-item-grid .filter-item:not(.filter-item--toggle-more) {
+    font-family: Slate,sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    font-size: .9375rem;
+    z-index: 1;
+    width: 100%;
+    padding: .9375rem .875rem .9375rem;
+    letter-spacing: 0;
+    color: #212121;
+    background-color: #fff;
+    border: 1px solid #212121;
+    border-radius: 0;
+}
+
 /* HOANG ANH */
 .header {
   display: flex;
