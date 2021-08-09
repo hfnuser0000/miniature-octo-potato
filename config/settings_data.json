@@ -173,6 +173,11 @@
       "static-footer": {
         "type": "static-footer",
         "blocks": {
+          "54bc4fdf-9e48-4aeb-b796-530ade970c8f": {
+            "type": "social_accounts",
+            "settings": {
+            }
+          },
           "40172908-6827-4e95-b31d-d5ce8763c62d": {
             "type": "rich_text",
             "settings": {
@@ -187,11 +192,6 @@
               "text": "<p>Email: <a href=\"mailto:support@coupleprints.com\" target=\"_blank\" title=\"mailto:support@coupleprints.com\">support@coupleprints.com<\/a><\/p><p>Add:  814 Mission St, Ste 600, San Francisco, CA, 94103, United States<\/p>"
             }
           },
-          "54bc4fdf-9e48-4aeb-b796-530ade970c8f": {
-            "type": "social_accounts",
-            "settings": {
-            }
-          },
           "static-footer-1": {
             "type": "newsletter",
             "settings": {
@@ -201,9 +201,9 @@
           }
         },
         "block_order": [
+          "54bc4fdf-9e48-4aeb-b796-530ade970c8f",
           "40172908-6827-4e95-b31d-d5ce8763c62d",
           "9d6c76a2-7279-45c3-8b09-5e7b14a57f11",
-          "54bc4fdf-9e48-4aeb-b796-530ade970c8f",
           "static-footer-1"
         ],
         "settings": {

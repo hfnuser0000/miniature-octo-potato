@@ -49,9 +49,6 @@
     {% endif %}
   {% elsif block.type == 'social_accounts' %}
     <img src="{{ 'logo2.png' | asset_url }}" style="object-fit:contain;width:100%;">
-    <h2 class="site-footer-block-title">
-      {{ 'footer.general.follow_us' | t }}
-    </h2>
 
     <div class="site-footer-block-content">
       {% render 'social-list' %}
