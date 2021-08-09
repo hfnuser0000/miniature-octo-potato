@@ -20899,3 +20899,14 @@ body {
     transition: top 150ms cubic-bezier(.4, 0, .2, 1);
     z-index: 700;
 }
+.live-search--focused .live-search-form, .live-search-form:hover {
+    border-color: rgba(127,127,127,.25);
+}
+
+.live-search-form {
+    position: absolute;
+    right: -1px;
+    left: -1px;
+    border-radius: 0;
+    transition: border .1s ease,box-shadow .1s ease;
+}
