@@ -182,6 +182,13 @@
       </a>
     </div>
 
+    {%
+      render 'live-search-form',
+      quick_links: linklists[section.settings.quick_links],
+      enable_images: section.settings.enable_live_search_images,
+      enable_content: section.settings.enable_live_search_articles_pages
+    %}
+
     {% if section.settings.small_promo_text != blank or section.settings.small_promo_heading != blank %}
       {% if section.settings.small_promo_link != blank %}
         <a
