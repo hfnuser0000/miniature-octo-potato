@@ -20093,13 +20093,13 @@ body {
     width: 53px;
     color: #000;
     vertical-align: top;
-    background-color: #fff;
+    background-color: #fff !important;
     border-color: #777;
     border-style: solid;
     border-top-width: 1px;
     border-right-width: 1px;
     border-bottom-width: 1px;
-    border-left-width: 0;
+    border-left-width: 0 !important;
     border-radius: 0 0 0 0;
 }
 
@@ -20107,9 +20107,6 @@ body {
     position: relative;
     padding-left: 15px;
     padding-right: 15px;
-}
-.live-search-button:hover {
-	background-color: #fff !important;
 }
 .small-promo-content--link {
 	display: none;
