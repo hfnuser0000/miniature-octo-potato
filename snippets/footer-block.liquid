@@ -26,9 +26,8 @@
         %}
       </div>
   {% elsif block.type == 'rich_text' or block.type == 'newsletter' %}
-    {% if block.settings.text == '<p>logo</p>' %}
+    {% if block.settings.title == 'logo' %}
       <p>{{ 'logo.png' | shopify_asset_url }}</p>
-      <p>title: {{ block.settings.title }}</p>
     {% endif %}
     {% if block.settings.title != blank %}
       <h2 class="site-footer-block-title">
