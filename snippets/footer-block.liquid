@@ -4,6 +4,8 @@
   {% if block.type == 'menu' %}has-accordion{% endif %}
 {%- endcapture -%}
 
+<p>{{ block.type }}</p>
+
 <div class="{{ block_class | strip_newlines }}" {{ block.shopify_attributes }}>
 
   {% if block.type == 'menu' %}
