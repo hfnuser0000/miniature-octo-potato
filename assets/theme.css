@@ -19907,18 +19907,18 @@ rgb(248, 248, 248)
   font-family: Raleway,sans-serif;
 }
 .form-field-input, .form-field-select, .option-value-input+.option-value-name, .product-reviews--content .spr-form .spr-form-input-email, .product-reviews--content .spr-form .spr-form-input-text, .product-reviews--content .spr-form .spr-form-input-textarea, .productgrid--sidebar-item-grid .filter-item:not(.filter-item--toggle-more) {
-    font-family: Slate,sans-serif;
-    font-style: normal;
-    font-weight: 200;
-    font-size: .9375rem;
-    z-index: 1;
-    width: 100%;
-    padding: .9375rem .875rem .9375rem;
-    letter-spacing: 0;
-    color: #212121;
-    background-color: #fff;
-    border: 1px solid #212121;
-    border-radius: 0;
+  font-family: Slate,sans-serif;
+  font-style: normal;
+  font-weight: 200;
+  font-size: .9375rem;
+  z-index: 1;
+  width: 100%;
+  padding: .9375rem .875rem .9375rem;
+  letter-spacing: 0;
+  color: #212121;
+  background-color: #fff;
+  border: 1px solid #212121;
+  border-radius: 0;
 }
 
 /* HOANG ANH */
@@ -19971,4 +19971,20 @@ body {
 }
 .site-footer-block-content p {
   font-size: .875rem;
+}
+.site-header-search-button {
+    padding: 0 3px;
+}
+
+.site-header-main-actions>* {
+    display: flex;
+    justify-content: center;
+}
+.site-header-button {
+    z-index: 125;
+    display: inline-block;
+    height: 46px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
 }
