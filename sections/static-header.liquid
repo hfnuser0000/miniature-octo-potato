@@ -1,5 +1,12 @@
+<style>
+  #header .search-header {
+	display: none;
+  }
+</style>
+
 <div style="display:flex;justify-content:center;padding-top:1.25rem;">
   <div id="header" class="header" style="position:relative;width:100%;max-width:1400px;">
+    <div class="search-header"></div>
     <img src="{{ 'logo.png' | asset_img_url: '200x' }}">
     <div style="position:absolute;top:0;right:0;">
       <div class="site-header-main-actions">
