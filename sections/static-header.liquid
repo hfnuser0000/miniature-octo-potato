@@ -18,6 +18,12 @@
   <div id="header" class="header" style="position:relative;width:100%;max-width:1400px;">
     <div class="search-header">
       <div class="live-search live-search--focused" data-live-search="">
+        {%
+          render 'live-search-form',
+          quick_links: linklists[section.settings.quick_links],
+          enable_images: section.settings.enable_live_search_images,
+          enable_content: section.settings.enable_live_search_articles_pages
+        %}
         <form class="live-search-form form-fields-inline" action="/search" method="get" role="search" aria-label="Product" data-live-search-form="">
           <input type="hidden" name="type" value="article,page,product">
           <div class="form-field no-label">
