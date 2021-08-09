@@ -176,7 +176,7 @@
           "40172908-6827-4e95-b31d-d5ce8763c62d": {
             "type": "rich_text",
             "settings": {
-              "title": "Rich text",
+              "title": "Logo",
               "text": "<p>{{ 'logo.png' | shopify_asset_url }}<\/p>"
             }
           },
