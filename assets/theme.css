@@ -19988,3 +19988,10 @@ body {
     border: none;
     cursor: pointer;
 }
+.site-header-icon {
+    display: inline-block;
+    position: relative;
+    padding: 10px;
+    color: #000;
+    outline: 0;
+}
