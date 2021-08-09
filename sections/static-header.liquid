@@ -76,7 +76,9 @@
 	display: none;
   }
 
-  #header.in-search .
+  #header.in-search .live-search {
+	margin-right: 3rem !important;
+  }
 
   .site-header-right {
 	position: absolute;
@@ -311,7 +313,7 @@
     </nav>
   </div>
   <div class="search-header">
-    <div style="width:calc(50% - 1rem);position:relative">
+    <div style="width:50%;position:relative">
       {%
         render 'live-search-form',
         quick_links: linklists[section.settings.quick_links],
