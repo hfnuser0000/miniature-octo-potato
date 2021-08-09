@@ -76,6 +76,8 @@
 	display: none;
   }
 
+  #header.in-search .
+
   .site-header-right {
 	position: absolute;
     right: 0;
@@ -309,12 +311,14 @@
     </nav>
   </div>
   <div class="search-header">
-    {%
+    <div style="max-width:50%">
+      {%
         render 'live-search-form',
-    quick_links: linklists[section.settings.quick_links],
-    enable_images: section.settings.enable_live_search_images,
-    enable_content: section.settings.enable_live_search_articles_pages
-    %}
+        quick_links: linklists[section.settings.quick_links],
+        enable_images: section.settings.enable_live_search_images,
+        enable_content: section.settings.enable_live_search_articles_pages
+      %}
+    </div>
   </div>
 </div>
 
