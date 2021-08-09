@@ -27,7 +27,6 @@
       </div>
   {% elsif block.type == 'rich_text' or block.type == 'newsletter' %}
     {% if block.settings.title == 'logo' %}
-      <img src="{{ 'logo.png' | asset_url }}">
     {% elsif block.settings.title != blank %}
       <h2 class="site-footer-block-title">
         {{ block.settings.title | escape }}
@@ -49,6 +48,7 @@
       %}
     {% endif %}
   {% elsif block.type == 'social_accounts' %}
+    <img src="{{ 'logo2.png' | asset_url }}">
     <h2 class="site-footer-block-title">
       {{ 'footer.general.follow_us' | t }}
     </h2>
