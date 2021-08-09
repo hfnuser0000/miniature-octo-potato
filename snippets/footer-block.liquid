@@ -4,7 +4,7 @@
   {% if block.type == 'menu' %}has-accordion{% endif %}
 {%- endcapture -%}
 
-{% if block.settings.text == 'logo' %}
+{% if block.settings.text == '<p>logo</p>' %}
   <p>{{ 'logo.png' | shopify_asset_url }}</p>
 {% endif %}
 
