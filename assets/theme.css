@@ -20086,3 +20086,25 @@ body {
     border-radius: 0;
     transition: border .1s ease,box-shadow .1s ease;
 }
+.live-search-button {
+    flex-basis: auto;
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 53px;
+    color: #000;
+    vertical-align: top;
+    background-color: #fff;
+    border-color: #777;
+    border-style: solid;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 0;
+    border-radius: 0 0 0 0;
+}
+
+.live-search-button, .productgrid--search-button {
+    position: relative;
+    padding-left: 15px;
+    padding-right: 15px;
+}
