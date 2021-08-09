@@ -103,14 +103,6 @@
     data-site-header-mobile-search-button
   {% endif %}
 >
-  <div class="search-header">
-    {%
-        render 'live-search-form',
-    quick_links: linklists[section.settings.quick_links],
-    enable_images: section.settings.enable_live_search_images,
-    enable_content: section.settings.enable_live_search_articles_pages
-    %}
-  </div>
   <button class="site-header-menu-toggle" data-menu-toggle>
     <div class="site-header-menu-toggle--button" tabindex="-1">
       <span class="toggle-icon--bar toggle-icon--bar-top"></span>
@@ -311,6 +303,14 @@
         %}
       {% endif %}
     </nav>
+  </div>
+  <div class="search-header">
+    {%
+        render 'live-search-form',
+    quick_links: linklists[section.settings.quick_links],
+    enable_images: section.settings.enable_live_search_images,
+    enable_content: section.settings.enable_live_search_articles_pages
+    %}
   </div>
 </div>
 
