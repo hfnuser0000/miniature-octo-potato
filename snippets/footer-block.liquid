@@ -50,7 +50,7 @@
   {% elsif block.type == 'social_accounts' %}
     <img src="{{ 'logo2.png' | asset_url }}" style="object-fit:contain;width:80%;">
 
-    <div class="site-footer-block-content" style="display:flex;width:80%;justify-content:center">
+    <div class="site-footer-block-content" style="display:flex;width:80%;max-width:200px;justify-content:center">
       {% render 'social-list' %}
     </div>
   {% endif %}
