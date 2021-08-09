@@ -4,10 +4,6 @@
   {% if block.type == 'menu' %}has-accordion{% endif %}
 {%- endcapture -%}
 
-{% if block.settings.text == '<p>logo</p>' %}
-  <p>{{ 'logo.png' | shopify_asset_url }}</p>
-{% endif %}
-
 <div class="{{ block_class | strip_newlines }}" {{ block.shopify_attributes }}>
 
   {% if block.type == 'menu' %}
@@ -30,6 +26,10 @@
         %}
       </div>
   {% elsif block.type == 'rich_text' or block.type == 'newsletter' %}
+    {% if block.settings.text == '<p>logo</p>' %}
+      <p>{{ 'logo.png' | shopify_asset_url }}</p>
+      <p>{{ block.settings.title }}</p>
+    {% endif %}
     {% if block.settings.title != blank %}
       <h2 class="site-footer-block-title">
         {{ block.settings.title | escape }}
