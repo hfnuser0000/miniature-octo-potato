@@ -27,7 +27,7 @@
       </div>
   {% elsif block.type == 'rich_text' or block.type == 'newsletter' %}
     {% if block.settings.title == 'logo' %}
-      <p>{{ 'logo.png' | shopify_asset_url }}</p>
+      <img src="{{ 'logo.png' | shopify_asset_url }}">
     {% elsif block.settings.title != blank %}
       <h2 class="site-footer-block-title">
         {{ block.settings.title | escape }}
