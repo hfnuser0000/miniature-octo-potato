@@ -67,7 +67,18 @@
 </div>
 
 <script>
-  console.log(jQuery);
+  (function () {
+    const initInterval = setInterval(function() {
+      if(window.jQuery) {
+        clearInterval(initInterval);
+        main();
+      }
+    }, 300);
+    function main() {
+      console.log($);
+    }
+    
+  })();
 </script>
 
 {% schema %}
