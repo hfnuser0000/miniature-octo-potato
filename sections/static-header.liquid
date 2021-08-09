@@ -1,5 +1,5 @@
 <div style="display:flex;justify-content:center;padding-top:1.25rem;">
-  <div class="header" style="position:relative;width:100%;max-width:1400px;">
+  <div id="header" class="header" style="position:relative;width:100%;max-width:1400px;">
     <img src="{{ 'logo.png' | asset_img_url: '200x' }}">
     <div style="position:absolute;top:0;right:0;">
       <div class="site-header-main-actions">
@@ -75,7 +75,9 @@
       }
     }, 300);
     function main() {
-      $('.site-header-search-button').on('click', console.log);
+      $('.site-header-search-button').on('click', function() {
+      	$('#header').toggleClass('in-search', true);
+      });
     }
     
   })();
