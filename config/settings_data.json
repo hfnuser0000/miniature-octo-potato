@@ -176,8 +176,8 @@
           "40172908-6827-4e95-b31d-d5ce8763c62d": {
             "type": "rich_text",
             "settings": {
-              "title": "Logo",
-              "text": "<p>{{ 'logo.png' | shopify_asset_url }}<\/p>"
+              "title": "",
+              "text": "<p>logo<\/p>"
             }
           },
           "9d6c76a2-7279-45c3-8b09-5e7b14a57f11": {
