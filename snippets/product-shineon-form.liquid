@@ -777,7 +777,7 @@
  
         {% unless shop.permanent_domain contains 'shineon-platform' %}
           {% if product.available == true %}
-          {% include 'product-informations-alert-shineon' with section_type: 'discount-message' %}
+          {% include 'product-informations-alert-shineon' with section_type, section_type: 'discount-message' %}
           {% endif %}
         {% endunless %}
 
@@ -799,7 +799,7 @@
           {% endif %}
 
           {% if section.settings.informations_alert_enable == true and product.available == true %}
-          {% include 'product-informations-alert-shineon' with almost_gone_max_value: section.settings.almost_gone_max_value, almost_gone_interval: section.settings.almost_gone_interval, section_type: 'hurry_up' %}
+          {% include 'product-informations-alert-shineon' with almost_gone_max_value, almost_gone_max_value: section.settings.almost_gone_max_value, almost_gone_interval: section.settings.almost_gone_interval, section_type: 'hurry_up' %}
           {% endif %}
         {% endif %}
 
@@ -820,7 +820,7 @@
         {% endif %}
 
         {% if section.settings.informations_alert_enable == true and product.available == true %}
-        {% include 'product-informations-alert-shineon' with almost_gone_max_value: section.settings.almost_gone_max_value, almost_gone_interval: section.settings.almost_gone_interval, section_type: 'hurry_up' %}
+        {% include 'product-informations-alert-shineon' with almost_gone_max_value, almost_gone_max_value: section.settings.almost_gone_max_value, almost_gone_interval: section.settings.almost_gone_interval, section_type: 'hurry_up' %}
         {% endif %}
       {% endif %}
 
@@ -2242,4 +2242,29 @@ document.addEventListener("DOMContentLoaded", function (event) {
 <!--FMRS-POPUP:END-->
 {% endif %}
 
-{% include 'product-shineon-scripts' with 'modal' %}
+{% include 'product-shineon-scripts' with 'modal' %}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% include 'product-informations-alert-shineon' with section_type: 'discount-message'
+    %}"
+  to: "{% include 'product-informations-alert-shineon' with section_type, section_type:
+    'discount-message' %}"
+  position: 39361..39463
+- from: "{% include 'product-informations-alert-shineon' with almost_gone_max_value:
+    section.settings.almost_gone_max_value, almost_gone_interval: section.settings.almost_gone_interval,
+    section_type: 'hurry_up' %}"
+  to: "{% include 'product-informations-alert-shineon' with almost_gone_max_value,
+    almost_gone_max_value: section.settings.almost_gone_max_value, almost_gone_interval:
+    section.settings.almost_gone_interval, section_type: 'hurry_up' %}"
+  position: 40268..40495
+- from: "{% include 'product-informations-alert-shineon' with almost_gone_max_value:
+    section.settings.almost_gone_max_value, almost_gone_interval: section.settings.almost_gone_interval,
+    section_type: 'hurry_up' %}"
+  to: "{% include 'product-informations-alert-shineon' with almost_gone_max_value,
+    almost_gone_max_value: section.settings.almost_gone_max_value, almost_gone_interval:
+    section.settings.almost_gone_interval, section_type: 'hurry_up' %}"
+  position: 41169..41396
+{%- endcomment -%}

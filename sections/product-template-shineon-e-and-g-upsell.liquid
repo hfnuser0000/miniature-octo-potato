@@ -281,10 +281,7 @@ Regular delivery info
 
             {% include 'badges-shineon' with 'product-badges' %}
 
-            {% include 'product-shineon-image-slider' with product
-                and one_style
-                and hidden_variants
-                and hidden_images %}
+            {% include 'product-shineon-image-slider' with product %}
 
             {% assign badge_uploaded = false %}
             {% if section.settings.badge_img_1 != null or section.settings.badge_img_2 != null or section.settings.badge_img_3 != null or section.settings.badge_img_4 != null or section.settings.badge_img_5 != null or section.settings.badge_img_6 != null %}
@@ -345,36 +342,14 @@ Regular delivery info
           </div>
           <div class="so-col-5 so-product-right">
             {% if is_template_optimized == true %}
-            {% include 'product-shineon-form-e-and-g-upsell' with product
-                  and base_variant
-                  and has_engraving
-                  and has_gold_variants
-                  and has_multiple_metals
-                  and has_silver_variants
-                  and hidden_images
-                  and hidden_variants
-                  and metals
-                  and one_style
-                  and option1_list
-                  and option2_list
-                  and option3_list %}
+            {% include 'product-shineon-form-e-and-g-upsell' with product %}
                 {% unless section.settings.content_right == '' %}
                   <div class="so-additional-content so-additional-content-right">
                     {{ section.settings.content_right }}
                   </div>
                 {% endunless %}
             {% else %}
-            {% include 'product-shineon-form' with product
-                  and one_style
-                  and hidden_variants
-                  and hidden_images
-                  and has_engraving
-                  and has_gold_variants
-                  and has_silver_variants
-                  and has_multiple_metals
-                  and option1_list
-                  and option2_list
-                  and option3_list %}
+            {% include 'product-shineon-form' with product %}
                   {% unless section.settings.content_right == '' %}
                     <div class="so-additional-content so-additional-content-right">
                       {{ section.settings.content_right }}
@@ -3114,3 +3089,47 @@ Regular delivery info
   }
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% include 'product-shineon-image-slider' with product
+                    and one_style
+                    and hidden_variants
+                    and hidden_images %}
+  to: "{% include 'product-shineon-image-slider' with product %}"
+  position: 11748..11805
+- from: |-
+    {% include 'product-shineon-form-e-and-g-upsell' with product
+                      and base_variant
+                      and has_engraving
+                      and has_gold_variants
+                      and has_multiple_metals
+                      and has_silver_variants
+                      and hidden_images
+                      and hidden_variants
+                      and metals
+                      and one_style
+                      and option1_list
+                      and option2_list
+                      and option3_list %}
+  to: "{% include 'product-shineon-form-e-and-g-upsell' with product %}"
+  position: 14878..14942
+- from: |-
+    {% include 'product-shineon-form' with product
+                      and one_style
+                      and hidden_variants
+                      and hidden_images
+                      and has_engraving
+                      and has_gold_variants
+                      and has_silver_variants
+                      and has_multiple_metals
+                      and option1_list
+                      and option2_list
+                      and option3_list %}
+  to: "{% include 'product-shineon-form' with product %}"
+  position: 15240..15289
+{% endcomment %}

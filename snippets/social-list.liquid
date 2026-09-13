@@ -97,12 +97,24 @@
     {%- endif -%}
 
     {%- if settings.social_rss != blank -%}
-      {%
-        render 'social-link',
-        id: 'rss',
-        title: 'general.social.rss' | t,
-        url: settings.social_rss
-      %}
+      {% render 'social-link', id: 'rss', title: 'general.social.rss', url: settings.social_rss %}
     {%- endif -%}
   </div>
 {% endif %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {%
+            render 'social-link',
+            id: 'rss',
+            title: 'general.social.rss' | t,
+            url: settings.social_rss
+          %}
+  to: "{% render 'social-link', id: 'rss', title: 'general.social.rss', url: settings.social_rss
+    %}"
+  position: 2454..2546
+{% endcomment %}

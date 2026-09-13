@@ -1042,7 +1042,7 @@
             {% endif %}
 
             {% if section.settings.informations_alert_enable == true and product.available == true %}
-                {% include 'product-informations-alert-shineon' with almost_gone_max_value: section.settings.almost_gone_max_value, almost_gone_interval: section.settings.almost_gone_interval, section_type: 'hurry_up' %}
+                {% include 'product-informations-alert-shineon' with almost_gone_max_value, almost_gone_max_value: section.settings.almost_gone_max_value, almost_gone_interval: section.settings.almost_gone_interval, section_type: 'hurry_up' %}
             {% endif %}
         {% endif %}
 
@@ -3095,3 +3095,17 @@ $form.off('submit.beacon_add_to_cart').one('submit.beacon_add_to_cart', function
         </style>
 
 {% endcase %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% include 'product-informations-alert-shineon' with almost_gone_max_value:
+    section.settings.almost_gone_max_value, almost_gone_interval: section.settings.almost_gone_interval,
+    section_type: 'hurry_up' %}"
+  to: "{% include 'product-informations-alert-shineon' with almost_gone_max_value,
+    almost_gone_max_value: section.settings.almost_gone_max_value, almost_gone_interval:
+    section.settings.almost_gone_interval, section_type: 'hurry_up' %}"
+  position: 44010..44237
+{% endcomment %}
